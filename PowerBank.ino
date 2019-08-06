@@ -159,13 +159,47 @@ void ExtPage(){ //page2
   LSB = gg.read(0x12); //Read voltage
   MSB = gg.read(0x13);
   val = word(MSB,LSB); 
-  pointerx=10; //Set text location
-  pointery=3; //Set text location
-  oled.setCursor(pointery,pointerx);
+  pointery=10; //Set text location
+  pointerx=3; //Set text location
+  oled.setCursor(pointerx,pointery);
   oled.print("FCC:");
   oled.print(val);
   oled.print("mAh");
 
+  /*Add Passed Charge*/
+  LSB = gg.read(0x34); //Read dQ
+  MSB = gg.read(0x35);
+  val = word(MSB,LSB); 
+  pointery=19; //Set text location
+  pointerx=3; //Set text location
+  oled.setCursor(pointerx,pointery);
+  oled.print("dQ:");
+  oled.print(val);
+  oled.print("mAh");
+
+  /*Read Temperature*/ //will verify by ev2300 , not sure about readings
+  LSB = gg.read(0x06); //Read temperature
+  MSB = gg.read(0x07);
+  val = word(MSB,LSB); 
+  othval = val;
+  othval = (othval/10)-273;
+  pointery=28; //Set text location (7 pixel text height + 2 pixel gap )
+  pointerx=3; //Set text location
+  oled.setCursor(pointerx,pointery);
+  oled.print("Temp:");
+  oled.print(othval,1);
+  oled.print("C");
+
+  /*TimeToEmpty (Time to full has been removed in G1 Firmware)*/
+  LSB = gg.read(0x16); //Read TimeToEmpty
+  MSB = gg.read(0x17);
+  val = word(MSB,LSB); 
+  pointery=37; //Set text location (7 pixel text height + 2 pixel gap )
+  pointerx=3; //Set text location
+  oled.setCursor(pointerx,pointery);
+  oled.print("TTE:");
+  oled.print(val);
+  oled.print("Mins");
   
   
   oled.sendBuffer();
