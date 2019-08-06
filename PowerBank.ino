@@ -5,6 +5,7 @@
  */
 #include <HDQ.h>
 #include <U8g2lib.h>
+#include <avr/power.h>
 int MSB=0; //for HDQ readings
 int LSB=0; //for HDQ readings
 unsigned long t0=2000; //time variables for millis based delay function
@@ -29,6 +30,26 @@ void setup() {
   oled.begin();
   pinMode(14,INPUT);
   pinMode(15,INPUT);
+  /* Power Saving */ 
+   USBCON|=(1<<OTGPADE);
+   if((USBSTA&(1<<VBUS))!=1){  //checks state of VBUS
+    power_usb_disable();
+    USBCON |= (1 << FRZCLK);             // Freeze the USB Clock              
+    PLLCSR &= ~(1 << PLLE);              // Disable the USB Clock (PPL) 
+    UDINT  &= ~(1 << SUSPI);
+    USBCON &=  ~(1 << USBE  );
+    CLKSEL0 |= (1 << RCE); // CLKSEL0.RCE = 1; Enable_RC_clock()
+ //   while ( (CLKSTA & (1 << RCON)) == 0){}  
+  //  CLKSEL0 &= ~(1 << CLKS);  
+  // CLKSEL0 &= ~(1 << EXTE); 
+ //  clock_prescale_set(clock_div_1);
+
+   }
+  power_adc_disable();
+  power_spi_disable();
+
+    
+   
   //add Micro Splash logo
   //Add Impedance Track logo
   Serial.begin(9600);
@@ -36,6 +57,7 @@ void setup() {
 }
 
 void loop() {
+
   /* Should refresh every 2 sec while scanning any key action without delays */ 
   t1=millis();
   timediff=t1-t0;
