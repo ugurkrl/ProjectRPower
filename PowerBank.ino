@@ -38,20 +38,9 @@ void setup() {
     PLLCSR &= ~(1 << PLLE);              // Disable the USB Clock (PPL) 
     UDINT  &= ~(1 << SUSPI);
     USBCON &=  ~(1 << USBE  );
-    CLKSEL0 |= (1 << RCE); // CLKSEL0.RCE = 1; Enable_RC_clock()
- //   while ( (CLKSTA & (1 << RCON)) == 0){}  
-  //  CLKSEL0 &= ~(1 << CLKS);  
-  // CLKSEL0 &= ~(1 << EXTE); 
- //  clock_prescale_set(clock_div_1);
-
    }
   power_adc_disable();
   power_spi_disable();
-
-    
-   
-  //add Micro Splash logo
-  //Add Impedance Track logo
   Serial.begin(9600);
 
 }
