@@ -95,7 +95,7 @@ void loop() {
 }
 
 
-void MainPage(){   //page0
+void MainPage(){   //page1
     oled.clearBuffer();
     oled.setCursor(0,0);
     oled.setDrawColor(1);
@@ -147,23 +147,33 @@ void MainPage(){   //page0
     drawuImage(54,10,10,21,chgicon);
     }
     
-    
     oled.sendBuffer();
 }
 
-void ExtPage(){
-  oled.setFont(u8g2_font_helvB10_tr);
+void ExtPage(){ //page2
   oled.clearBuffer();
-    
-    
-  oled.setCursor(0,24);
-  oled.print("Page2");
+  oled.setFont(u8g2_font_6x12_tr);
+  oled.setDrawColor(1);
+
+  /*Read FCC*/
+  LSB = gg.read(0x12); //Read voltage
+  MSB = gg.read(0x13);
+  val = word(MSB,LSB); 
+  pointerx=10; //Set text location
+  pointery=3; //Set text location
+  oled.setCursor(pointery,pointerx);
+  oled.print("FCC:");
+  oled.print(val);
+  oled.print("mAh");
+
+  
+  
   oled.sendBuffer();
   
 }
 
 void ContPage(){
-  oled.setFont(u8g2_font_helvB10_tr);
+  oled.setFont(u8g2_font_helvR10_tr);
   oled.clearBuffer();
   oled.setCursor(0,24);
   oled.print("Page3");
