@@ -75,9 +75,9 @@ void loop() {
 void MainPage(){   //page0
     oled.clearBuffer();
     oled.setCursor(0,0);
-    oled.setFont(u8g2_font_helvB10_tr);
     oled.setDrawColor(1);
-   
+    oled.setFont(u8g2_font_helvB10_tr);
+
 
     /* Draw Battery*/
     LSB = gg.read(0x2c); //read SoC
@@ -121,25 +121,7 @@ void MainPage(){   //page0
 
     /* Draw Charging Icon */
     if(chg==1){ //Charging detection
-    oled.setDrawColor(0); //Clean Charging Icon Area
-    oled.drawBox(54,10,10,21);
-    oled.setDrawColor(1);
-//  oled.drawLine(x0, y0, x1, y1);
-    oled.drawLine(58, 16, 58, 29);
-    oled.drawLine(59, 16, 59, 29); 
-    oled.drawLine(58, 16, 55, 16);
-    oled.drawLine(59, 16, 62, 16);
-    oled.drawLine(58, 17, 55, 17);
-    oled.drawLine(59, 17, 62, 17);
-    oled.drawLine(55, 18, 62, 18);
-    oled.drawLine(55, 16, 62, 16);
-    oled.drawLine(55, 15, 62, 15);
-    oled.drawLine(56, 19, 61, 19);
-    oled.drawLine(57, 20, 60, 20);
-    oled.drawLine(56, 17, 56, 11);
-    oled.drawLine(61, 17, 61, 11); 
-    
-    
+
     }
     
     
