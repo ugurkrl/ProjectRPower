@@ -6,6 +6,7 @@
 #include <HDQ.h>
 #include <U8g2lib.h>
 #include <avr/power.h>
+#include <avr/pgmspace.h>
 int MSB=0; //for HDQ readings
 int LSB=0; //for HDQ readings
 unsigned long t0=2000; //time variables for millis based delay function
@@ -25,7 +26,6 @@ int contrastval=255;
 bool latch=0; //for debounce
 U8G2_SH1106_128X64_NONAME_F_HW_I2C oled(U8G2_R0); //Define SH1106 OLED display on framebuffer mode
 HDQ gg(4); //Battery is connected on D4 Pin
-
 void setup() {
   oled.begin();
   pinMode(14,INPUT);
@@ -74,9 +74,11 @@ void loop() {
 
 void MainPage(){   //page0
     oled.clearBuffer();
+    oled.setCursor(0,0);
     oled.setFont(u8g2_font_helvB10_tr);
-    
-    
+    oled.setDrawColor(1);
+   
+
     /* Draw Battery*/
     LSB = gg.read(0x2c); //read SoC
     MSB = gg.read(0x2d);
@@ -116,7 +118,6 @@ void MainPage(){   //page0
     oled.print(othval);
     oled.print("V");
     LowBatteryHandler();
-    
 
     /* Draw Charging Icon */
     if(chg==1){ //Charging detection
@@ -148,9 +149,12 @@ void MainPage(){   //page0
 void ExtPage(){
   oled.setFont(u8g2_font_helvB10_tr);
   oled.clearBuffer();
+    
+    
   oled.setCursor(0,24);
   oled.print("Page2");
   oled.sendBuffer();
+  
 }
 
 void ContPage(){
@@ -212,5 +216,23 @@ void LowBatteryHandler(){
   oled.setContrast(0); //Reduce display contrast to avoid deep discharge and allow precharge. Can reduce power consumption to 0.25W
 }else{oled.setContrast(contrastval);}
 
+}
+
+/* Function for drawing images to OLED from array.Inside array 0 means clear pixel , 1 means draw pixel and 2 means skip that pixel
+ *  I'll try to use progmem later. For now this will enough for drawing charging icon
+ */
+void drawuImage(int x,int y,int width,int height,byte arr[]){
+  int loc = 0;
+  for(int m=0; m < height ; m++){;
+     for(int n=0; n < width ; n++){
+      if(arr[loc]!=2){
+           if(arr[loc]==0){ oled.setDrawColor(0);}
+           if(arr[loc]==1){ oled.setDrawColor(1);}
+           oled.drawPixel(x+n,y+m);
+       }
+      loc = loc +1;
+    }
+  }
+  oled.setCursor(0,0);
 }
   
