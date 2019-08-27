@@ -164,14 +164,19 @@ void ExtPage(){ //page2
   oled.setFont(u8g2_font_6x12_tr);
   oled.setDrawColor(1);
 
-  /*Read FCC*/
-  LSB = gg.read(0x12); //Read voltage
-  MSB = gg.read(0x13);
-  val = word(MSB,LSB); 
+  /*Read Remcap + FCC*/
   pointery=10; //Set text location
   pointerx=3; //Set text location
   oled.setCursor(pointerx,pointery);
-  oled.print("FCC:");
+  LSB = gg.read(0x10); //Read RM
+  MSB = gg.read(0x11);
+  val = word(MSB,LSB); 
+  oled.print(val);
+  oled.print("mAh");
+  LSB = gg.read(0x12); //Read FCC
+  MSB = gg.read(0x13);
+  val = word(MSB,LSB);
+  oled.print("/");
   oled.print(val);
   oled.print("mAh");
 
