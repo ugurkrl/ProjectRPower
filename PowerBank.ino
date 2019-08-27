@@ -7,6 +7,9 @@
 #include <U8g2lib.h>
 #include <avr/power.h>
 #include <avr/pgmspace.h>
+
+#define VER "0.0001"
+
 int MSB=0; //for HDQ readings
 int LSB=0; //for HDQ readings
 unsigned long t0=2000; //time variables for millis based delay function
@@ -53,19 +56,22 @@ void setup() {
   oled.begin();
   pinMode(14,INPUT);
   pinMode(15,INPUT);
+  
+  power_adc_disable();
+  power_spi_disable();
+  Serial.begin(115200);
+  if(digitalRead(14)==1 && digitalRead(15)==1){
+    DevPage();
+  }
   /* Power Saving */ 
-   USBCON|=(1<<OTGPADE);
-   if((USBSTA&(1<<VBUS))!=1){  //checks state of VBUS
+  USBCON|=(1<<OTGPADE);
+  if((USBSTA&(1<<VBUS))!=1){  //checks state of VBUS
     power_usb_disable();
     USBCON |= (1 << FRZCLK);             // Freeze the USB Clock              
     PLLCSR &= ~(1 << PLLE);              // Disable the USB Clock (PPL) 
     UDINT  &= ~(1 << SUSPI);
     USBCON &=  ~(1 << USBE  );
    }
-  power_adc_disable();
-  power_spi_disable();
-  Serial.begin(9600);
-
 }
 
 void loop() {
@@ -212,6 +218,20 @@ void ContPage(){
   oled.setCursor(0,24);
   oled.print("Page3");
   oled.sendBuffer();
+}
+
+void DevPage(){
+  bool dev=true;
+  oled.setFont(u8g2_font_helvR10_tr);
+  oled.setCursor(0,10);
+  oled.print("BOOTMODE=DEV\n");
+  oled.print("KEY TO OPEN UART");
+  oled.sendBuffer();
+  
+  Serial.print("BOOTMODE=DEV\n");
+  Serial.print("VERSION=");
+  Serial.print(VER);
+  while(dev==true){}
 }
 
 void ScanButton(){
