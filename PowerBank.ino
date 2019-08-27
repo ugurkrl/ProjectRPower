@@ -59,6 +59,7 @@ void setup() {
   
   power_adc_disable();
   power_spi_disable();
+  oled.sendF("caca", 0xd5 , 0xf0,0x30,0x31); //fix OLED flicker
   Serial.begin(115200);
   if(digitalRead(14)==1 && digitalRead(15)==1){
     DevPage();
@@ -157,6 +158,8 @@ void MainPage(){   //page1
 }
 
 void ExtPage(){ //page2
+  
+  
   oled.clearBuffer();
   oled.setFont(u8g2_font_6x12_tr);
   oled.setDrawColor(1);
@@ -206,9 +209,11 @@ void ExtPage(){ //page2
   oled.print("TTE:");
   oled.print(val);
   oled.print("Mins");
+
   
   
   oled.sendBuffer();
+  
   
 }
 
@@ -223,11 +228,13 @@ void ContPage(){
 void DevPage(){
   bool dev=true;
   oled.setFont(u8g2_font_helvR10_tr);
-  oled.setCursor(0,10);
+  oled.setCursor(0,12);
   oled.print("BOOTMODE=DEV\n");
+  oled.setCursor(0,26);
   oled.print("KEY TO OPEN UART");
   oled.sendBuffer();
-  
+  delay(2000);
+  while(digitalRead(14)==0 && digitalRead(15)==0){}
   Serial.print("BOOTMODE=DEV\n");
   Serial.print("VERSION=");
   Serial.print(VER);
