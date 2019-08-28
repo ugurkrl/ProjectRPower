@@ -92,7 +92,7 @@ void loop() {
 
   
   page=SetPage();
-  if(timediff >= 2000){
+  if(timediff >= 250){
     if(page==0){
       MainPage();
     }
