@@ -51,7 +51,9 @@ byte chgicon[]{
 };
 bool latch=0; //for debounce
 U8G2_SH1106_128X64_NONAME_F_HW_I2C oled(U8G2_R0); //Define SH1106 OLED display on framebuffer mode
+
 HDQ gg(4); //Battery is connected on D4 Pin
+
 void setup() {
   oled.begin();
   pinMode(14,INPUT);
@@ -271,28 +273,31 @@ void DevPage(){
     Serial.println("PACK IS UNSEALED");
   }
   int x,y,z;
-  gg.write(0x61,0x00); 
+  
   //printalldataflash
   while(dev==true){
-    for(x=0;x<128;x++){
+    int data = millis();
+    gg.write(0x61,0x00); 
+    for(x=0;x<128;x++){ //128 subclass
      gg.write(0x3E,x);
-       for(y=0;y<1;y++){
-        gg.write(0x3F,0);
-          for(z=0;z<31;z++){
+       for(y=0;y<4;y++){ //4blocks ?
+        gg.write(0x3F,y);
+          for(z=0;z<32;z++){ //32byte
             MSB=gg.read(64+z);
-            Serial.print("subclass:");
+            Serial.print("SubClass:");
             Serial.print(x);
-            Serial.print("block");
+            Serial.print(" Block:");
             Serial.print(y);
-            Serial.print("addr");
+            Serial.print(" Sector:");
             Serial.print(z);
             Serial.print(" : ");
             Serial.print(MSB);
             Serial.print("\n");
           }
-          
-       }
-    } delay(999999);
+        }
+        oled.drawBox(0,4,x,34);
+        oled.sendBuffer();
+    } Serial.print("Took ");Serial.print((millis()-data)/1000);Serial.print(" secs");delay(999999);
    }
 }
 
