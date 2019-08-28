@@ -104,9 +104,6 @@ void loop() {
     }
     t0=t1; //sync time variables
   }
-
-  LowBatteryHandler();
-  
 }
 
 
