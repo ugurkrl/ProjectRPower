@@ -68,8 +68,14 @@ void setup() {
   power_spi_disable();
   oled.sendF("caca", 0xd5 , 0xf0,0x30,0x31); //fix OLED flicker
   Serial.begin(115200);
+  if(digitalRead(14)==1){
+    DevPage(0);
+  }
+  if(digitalRead(15)==1){
+    DevPage(1);
+  }
   if(digitalRead(14)==1 && digitalRead(15)==1){
-    DevPage();
+    DevPage(2);
   }
   /* Power Saving */ 
   USBCON|=(1<<OTGPADE);

@@ -6,7 +6,7 @@
  *  Impedance Track(TM) integrated USB Power Bank Solution with 128x64 OLED Display
  */
 
-void DevPage(){
+void DevPage(int type){
   bool dev=true;
   oled.setFont(u8g2_font_helvR10_tr);
   oled.setCursor(0,12);
@@ -69,7 +69,8 @@ void DevPage(){
             Serial.print("\n");
           }
         }
-        oled.drawBox(0,4,x,34);
+        oled.drawFrame(0,32,128,12);
+        oled.drawBox(0,33,x,11);
         oled.sendBuffer();
     } Serial.print("Took ");Serial.print((millis()-data)/1000);Serial.print(" secs");delay(999999);
    }
