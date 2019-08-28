@@ -291,7 +291,7 @@ void DevPage(){
             Serial.print(" Sector:");
             Serial.print(z);
             Serial.print(" : ");
-            Serial.print(MSB);
+            Serial.print(MSB,HEX);
             Serial.print("\n");
           }
         }
