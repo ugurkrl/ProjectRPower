@@ -243,7 +243,57 @@ void DevPage(){
   Serial.print("BOOTMODE=DEV\n");
   Serial.print("VERSION=");
   Serial.print(VER);
-  while(dev==true){}
+  
+  //check if battery is unsealed
+  LSB=gg.read(0);
+  MSB=gg.read(1);
+  if(bitRead(MSB, 5)==0){
+    Serial.println("PACK IS UNSEALED");
+  }else
+  //try to unseal battery
+  gg.write(0x0,0x36);
+  delay(10);
+  gg.write(0x1,0x72);
+  delay(10);
+  gg.write(0x0,0x04);
+  delay(10);
+  gg.write(0x1,0x14);
+  delay(10);
+  gg.write(0x0,0xFF);
+  delay(10);
+  gg.write(0x1,0xFF);
+  delay(10);
+  gg.write(0x0,0xFF);
+  delay(10);
+  gg.write(0x1,0xFF);
+  //recheck battery
+  if(bitRead(MSB, 5)==0){
+    Serial.println("PACK IS UNSEALED");
+  }
+  int x,y,z;
+  gg.write(0x61,0x00); 
+  //printalldataflash
+  while(dev==true){
+    for(x=0;x<128;x++){
+     gg.write(0x3E,x);
+       for(y=0;y<1;y++){
+        gg.write(0x3F,0);
+          for(z=0;z<31;z++){
+            MSB=gg.read(64+z);
+            Serial.print("subclass:");
+            Serial.print(x);
+            Serial.print("block");
+            Serial.print(y);
+            Serial.print("addr");
+            Serial.print(z);
+            Serial.print(" : ");
+            Serial.print(MSB);
+            Serial.print("\n");
+          }
+          
+       }
+    } delay(999999);
+   }
 }
 
 void ScanButton(){
