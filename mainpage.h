@@ -18,20 +18,20 @@ int MainPage(){   //page1
     MSB = gg.read(0x2d);
     val = word(MSB,LSB); 
 
-    pointerx = map(val, 0, 100, 0, 114); //Map SoC Value to Box size
-    oled.drawFrame(0,2,118,38); //draw frame
-    oled.drawBox(118,10,8,21); //draw frame
-    oled.drawBox(2,4,pointerx,34); //Draw battery level
+    pointerx = map(val, 0, 100, 0, 114); //Map SoC Value to Box size  /*needs lim*/
+    oled.drawFrame(0,2,118,42); //draw frame
+    oled.drawBox(118,10,8,26); //draw frame
+    oled.drawBox(2,4,pointerx,38); //Draw battery level
 
     /*Draw StateOfCharge */
     if(val>9 && val<100){pointery=51;}else if(val<10){pointery=55;}else if(val==100){pointery=47;} //Set text location
-    oled.setCursor(pointery, 58);
+    oled.setCursor(pointery, 60); //58 for sh
     oled.print(val);
     oled.print("%");
 
     /* Draw Power */
     pointery=0; //Set text location
-    oled.setCursor(pointery,58);
+    oled.setCursor(pointery,60);//58 for sh
     LSB = gg.read(0x24); //read Power
     MSB = gg.read(0x25);
     val = word(MSB,LSB); 
@@ -48,14 +48,21 @@ int MainPage(){   //page1
     MSB = gg.read(9);
     val = word(MSB,LSB); 
     int volt=val;
-    oled.setCursor(pointery,58);
+    oled.setCursor(pointery,60);//58 for sh
     othval = (val*0.001);
     oled.print(othval);
     oled.print("V");
-
+    Serial.print(volt);
+    Serial.print(" ");
+    LSB = gg.read(0x14); //read Power
+    MSB = gg.read(0x15);
+    val = word(MSB,LSB); 
+    Serial.println(val);
     /* Draw Charging Icon */
     if(chg==1){ //Charging detection
-    drawuImage(54,10,10,21,chgicon);
+    //drawuImage(54,10,10,21,chgicon);
+    oled.setCursor(3,16);
+    oled.print("CHARGING");
     }
     oled.sendBuffer();
     return volt;

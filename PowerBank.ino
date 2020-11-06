@@ -48,11 +48,11 @@ byte chgicon[]{
 2,2,2,0,1,1,0,2,2,2,
 2,2,2,0,1,1,0,2,2,2,
 2,2,2,0,0,0,0,2,2,2
-};
+}; 
 bool latch=0; //for debounce
-U8G2_SH1106_128X64_NONAME_F_HW_I2C oled(U8G2_R0); //Define SH1106 OLED display on framebuffer mode
+U8G2_SSD1306_128X64_NONAME_F_HW_I2C oled(U8G2_R2); //Define SH1106 OLED display on framebuffer mode
 
-HDQ gg(4); //Battery is connected on D4 Pin
+HDQ gg(3); //Battery is connected on D4 Pin
 
 #include "debugpage.h"
 #include "contrastpage.h"
@@ -60,15 +60,21 @@ HDQ gg(4); //Battery is connected on D4 Pin
 #include "secondpage.h"
 
 void setup() {
-  oled.begin();
-  pinMode(14,INPUT);
-  pinMode(15,INPUT);
   
-  power_adc_disable();
-  power_spi_disable();
-  oled.sendF("caca", 0xd5 , 0xf0,0x30,0x31); //fix OLED flicker
+  pinMode(4,INPUT); //14
+  pinMode(5,INPUT); //15
+  pinMode(6,OUTPUT);
+  digitalWrite(6,HIGH); //Enable step up
+  oled.initDisplay();
+  oled.clearBuffer();
+  oled.begin();
+  delay(250);
+ 
+//  power_adc_disable();
+//  power_spi_disable();
+ // oled.sendF("caca", 0xd5 , 0xf0,0x30,0x31); //fix OLED flicker
   Serial.begin(115200);
-  if(digitalRead(14)==1){
+  if(digitalRead(5)==1){
     DevPage(0);
   }
   if(digitalRead(15)==1){
@@ -78,18 +84,19 @@ void setup() {
     DevPage(2);
   }
   /* Power Saving */ 
-  USBCON|=(1<<OTGPADE);
-  if((USBSTA&(1<<VBUS))!=1){  //checks state of VBUS
-    power_usb_disable();
-    USBCON |= (1 << FRZCLK);             // Freeze the USB Clock              
-    PLLCSR &= ~(1 << PLLE);              // Disable the USB Clock (PPL) 
-    UDINT  &= ~(1 << SUSPI);
-    USBCON &=  ~(1 << USBE  );
-   }
+//  USBCON|=(1<<OTGPADE);
+//  if((USBSTA&(1<<VBUS))!=1){  //checks state of VBUS
+//    power_usb_disable();
+//    USBCON |= (1 << FRZCLK);             // Freeze the USB Clock              
+//    PLLCSR &= ~(1 << PLLE);              // Disable the USB Clock (PPL) 
+//    UDINT  &= ~(1 << SUSPI);
+//    USBCON &=  ~(1 << USBE  );
+   
+//   }
+   
 }
 
 void loop() {
-
   /* Should refresh every 2 sec while scanning any key action without delays */ 
   t1=millis();
   timediff=t1-t0;
@@ -118,13 +125,13 @@ void loop() {
 
 
 void ScanButton(){
-  if(digitalRead(14)==1){ //read menu button
+  if(digitalRead(4)==1){ //read menu button
   menutrig=menutrig+1;
   }else{
   menutrig=0;
   }
   
-  if(digitalRead(15)==1){ //read function button 
+  if(digitalRead(5)==1){ //read function button 
   functrig=functrig+1;
   }else{
   functrig=0;

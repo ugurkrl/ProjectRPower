@@ -63,7 +63,29 @@ void SecPage(){ //page2
   oled.print(val);
   oled.print("Mins");
 
-  
+  /*State Of Health*/
+  val = gg.read(0x2e); //Read TimeToEmpty
+  pointery=46; //Set text location (7 pixel text height + 2 pixel gap )
+  pointerx=3; //Set text location
+  oled.setCursor(pointerx,pointery);
+  oled.print("SoH:");
+  oled.print(val);
+  oled.print("%");
+  pointerx = map(val, 0, 100, 0, 124); //Map SoH Value to Box size
+  oled.drawFrame(0,48,128,16); //draw frame
+  oled.drawBox(2,50,pointerx,12); //Draw SoH level
+
+ /*QMax*/
+  gg.write(0x61,0x00);
+  gg.write(0x3E,0x52); //subclass
+  gg.write(0x3F,0x00); //block
+  LSB = gg.read(0x41); //Read sector1
+  MSB = gg.read(0x40);
+  val = word(MSB,LSB); 
+  pointery=46; //Set text location (7 pixel text height + 2 pixel gap )
+  oled.print("QMax:");
+  oled.print(val);
+  oled.print("mAh");
   
   oled.sendBuffer();
 

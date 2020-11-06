@@ -15,7 +15,7 @@ void DevPage(int type){
   oled.print("KEY TO OPEN UART");
   oled.sendBuffer();
   delay(2000);
-  while(digitalRead(14)==0 && digitalRead(15)==0){}
+  while(digitalRead(4)==0 && digitalRead(5)==0){}
   Serial.print("BOOTMODE=DEV\n");
   Serial.print("VERSION=");
   Serial.print(VER);
@@ -58,11 +58,11 @@ void DevPage(int type){
         gg.write(0x3F,y);
           for(z=0;z<32;z++){ //32byte
             MSB=gg.read(64+z);
-            Serial.print("SubClass:");
+            Serial.print("C:");
             Serial.print(x);
-            Serial.print(" Block:");
+            Serial.print(" B:");
             Serial.print(y);
-            Serial.print(" Sector:");
+            Serial.print(" S:");
             Serial.print(z);
             Serial.print(" : ");
             Serial.print(MSB,HEX);
