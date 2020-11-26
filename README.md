@@ -12,4 +12,4 @@
 
 ![Block Diagram](/HW/GaugeMaster/Pics/Block.png)
 
-///Crystal Oscillator is 8MHz even it says 16MHz in 3D Model//
+*Crystal Oscillator is 8MHz even it says 16MHz in 3D Model*
