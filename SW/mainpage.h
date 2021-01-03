@@ -6,6 +6,8 @@
  *  Impedance Track(TM) integrated USB Power Bank Solution with 128x64 OLED Display
  */
 #include "dispfuncs.h"
+static const unsigned char CHG[] PROGMEM = {
+   0x33, 0x33, 0x33, 0x33, 0x3f, 0x1e, 0x0c, 0x0c, 0x0c, 0x0c, 0x00 };
 int MainPage(){   //page1
     oled.clearBuffer();
     oled.setCursor(0,0);
@@ -59,11 +61,12 @@ int MainPage(){   //page1
     val = word(MSB,LSB); 
     Serial.println(val);
     /* Draw Charging Icon */
+    chg=1;
     if(chg==1){ //Charging detection
-    //drawuImage(54,10,10,21,chgicon);
-    oled.setCursor(3,16);
-    oled.print("CHARGING");
-    }
+    oled.setBitmapMode(0); // solid
+    oled.drawXBMP(3,16,8,11,CHG); //draw charging icon
+      }
+    
     oled.sendBuffer();
     return volt;
 }
