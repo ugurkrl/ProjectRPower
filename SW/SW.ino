@@ -28,7 +28,7 @@ int functrig=0;
 int contrastval=255;
 
 bool latch=0; //for debounce
-U8G2_SSD1306_128X64_NONAME_2_HW_I2C oled(U8G2_R2); //Define SH1106 OLED display on framebuffer mode
+U8G2_SSD1306_128X64_NONAME_F_HW_I2C oled(U8G2_R2); //Define SH1106 OLED display on framebuffer mode
 
 HDQ gg(3); //Battery is connected on D4 Pin
 
