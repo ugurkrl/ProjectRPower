@@ -33,4 +33,4 @@
 1. Add SMBUS/I²C battery support (40z50 etc.)
 1. Add external i2c pads. Since some battery charging solutions can use i2c bus for configuration
 1. Reduce size of PGM and BATT pads
-1. Change Crystal to SMD variation (THT one is pretty thick)
+1. Change Crystal to SMD variation (THT one is pretty thick) 
