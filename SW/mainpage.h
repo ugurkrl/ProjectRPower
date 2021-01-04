@@ -41,8 +41,13 @@ int MainPage(){   //page1
     othval = word(MSB,LSB);
     if(val<0){othval=(65535-othval);} //Fix discharge power issue
     othval = (othval*0.001);
-    oled.print(othval);
+    if(othval>=10){
+     oled.print(othval,1);
+     oled.print("W");
+    }else{
+    oled.print(othval,2);
     oled.print("W");
+    }
 
     /* Draw Voltage*/
     pointery=88; //Set text location

@@ -6,15 +6,15 @@
 #include <HDQ.h>
 #include <U8g2lib.h>
 #include <avr/power.h>
-#include <avr/pgmspace.h>
+
 
 #define VER "0.0001"
 
 int MSB=0; //for HDQ readings
 int LSB=0; //for HDQ readings
-unsigned long t0=2000; //time variables for millis based delay function
-unsigned long t1; //time variables for millis based delay function
-unsigned long timediff;
+unsigned int t0=2000; //time variables for millis based delay function
+unsigned int t1; //time variables for millis based delay function
+unsigned int timediff;
 int page=0; //Current display page
 int pointerx=0; //multi purpose pointers
 int pointery=0; //multi purpose pointers
