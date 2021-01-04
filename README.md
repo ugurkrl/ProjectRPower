@@ -20,7 +20,6 @@
 1. Or maybe add auto dimming display function (Those cheap 128x64 panels burns so easily. You dont want to see charging icon even when battery isnt charging)
 1. Add contrast change ability
 1. Add function for second HDQ battery
-1. Fix charging logo (only writes "charging" on display bc i couldnt fit AC outlet logo to sram lol)
 1. Create Time to Full(or %80 ?) function in sw (since it has removed in bq27541 G1 firmware)
 1. It should switch between 0.00W and 00.0W automatically on display. USB Quick Charging causes issues after 9.99W
 1. Allow user to switch between Watts and Amperes on display
